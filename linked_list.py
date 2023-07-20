@@ -33,7 +33,8 @@ class LinkedList(object):  # A linked list of data elements
 
     # what's big O time add itself is O(n) (linear time)
     # TODO can re-write add, and other functions, so that only data comes in, not a Node
-    # TODO Can re-write add so it DOESn't have a loop?
+    # We can re-write add so it DOESn't have a loop?
+    #      -> add can be improve by maintaining a 'tail' reference that always points to the last node in the list
     def add(self, other: Node): #add to end
         cur = self.__head
         steps = 1  # we count 1 step for coming in a function at all
@@ -60,16 +61,16 @@ class LinkedList(object):  # A linked list of data elements
         return cur
         # return a Node at index
 
+    # TODO need to account for edge cases (addAt first, last?, list is empty, or index is out of bounds)
 
     def addAt(self, index: int, other:Node):
 
-        # what if we addAt(0)?
-        # TODO we need to update the __head!!!!
+
 
         # it is inefficient to call get twice, can we only call it once?
         nodeiminus1 = self.get(index-1) # big O(n)
-        nodei = self.get(index) # big O(n)
-        # TODO how to re-write to call get only once
+        nodei = nodeiminus1.next # self.get(index) # big O(n)
+        # we can re-write to call get only once, see above
 
         # big O(2n), but so what, this is just O(n)
 
@@ -77,12 +78,26 @@ class LinkedList(object):  # A linked list of data elements
         nodeiminus1.next = other
         other.next = nodei
 
+        # what if we addAt(0)?
+        # update the __head!!!!
+        # TODO not tested!
+        if (index == 0):
+            self.__head = other
+        self.size += 1
+
+
     # remove
 
-    # TODO before Thurs: code
+    # TODO need to account for edge cases (removing first, last, list is empty, or index is out of bounds)
     def remove(self, index:int):
         # see picture from video
         # (i-1).next = (i.next)
+        nodeiminus1 = self.get(index - 1)  # big O(n)
+        nodei = nodeiminus1.next #self.get(index)  # big O(n)
+
+        nodeiminus1.next = nodei.next
+        self.size -= 1
+
         pass
     # print
     # assmume we have a valid list coming in
@@ -98,3 +113,17 @@ class LinkedList(object):  # A linked list of data elements
                 cur = cur.next
             message += str(cur.data)  # add the last node's data to the message
         return message
+
+    def find(self, keyToLookFor) -> int:
+        # returns the index where we found
+        # returns None if not found
+        # we could improve this code by checking for a valid index
+        # nig O(n)
+        cur = self.__head
+        #steps = 1
+        for i in range(self.size):
+            if (cur.data == keyToLookFor):
+                return i
+            else:
+                cur = cur.next
+        return None

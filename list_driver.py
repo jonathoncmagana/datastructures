@@ -41,6 +41,13 @@ def main():
     # my_linked_list.get(89)
     # print(my_linked_list)
 
+    print(my_linked_list.find(30))
+    print(my_linked_list.size)
+    my_linked_list.remove(30)
+    print(my_linked_list.size)
+    print(my_linked_list.find(30))
+    print(my_linked_list.get(30))
+    print(my_linked_list)
     steps = 1
     for i in range(200):  # heres an n
         for j in range(200): # heres an n
@@ -48,6 +55,19 @@ def main():
                 steps += 1
     # the whole thing is O(n^3)
     print (steps)
+
+    #myArray = []
+    # fill it with 10000
+    # how fast is our "get" equivalent
+    #print(myArray[9999])  # big O(1), aka constant
+
+    # assuming we have remove written, we have a worst case scenario
+    # linkedlist.remove(0) - is a special case. it is Big O(1)
+    # what would it mean to remove any entry in an array?
+    #   -> shift the "spot" of everything at a higher index
+    #   -> how many loops would need? one loop, or big O(n)
+
+    # These two data structures: stack and a queue, are better with a linked list
 
 if __name__ == "__main__":
     main()
