@@ -3,10 +3,13 @@
 # It used to be needed in python 2,
 # but in python 3 it is no longer needed
 class Node(object):  # One part of the data Tree
-    def __init__(self, data):  # Constructor
+    def __init__(self, key, data):  # Constructor
         self.data = data  # The data object for this Node
         self.left = None  # the left child
         self.right = None  # the right child
+        #using a key, like Student with an ID
+        self.key = key  # could be used to prevent duplicates,
+                        # but be careful how you use if you WANT duplicates
 
     def __str__(self):
         return str(self.data)
@@ -25,8 +28,8 @@ class BST(object):  # A binary search tree of data elements
     # 1. before function is called, we have a valid data structure (BST)
     # 2. update all attributes (root, size, left and right of Nodes)
     # 3. on the way out, the function must leave the data structure valid
-    def add(self, dataToAdd): # we decided that adding is log(N) (LOG BASE 2)
-        nodeToAdd = Node(dataToAdd) # QoL improvement, hide Nodes from user
+    def add(self, key, dataToAdd): # we decided that adding is log(N) (LOG BASE 2)
+        nodeToAdd = Node(key, dataToAdd) # QoL improvement, hide Nodes from user
         cur = self.__root  # the current Node we are looking at
 
         self.size += 1
@@ -39,7 +42,7 @@ class BST(object):  # A binary search tree of data elements
 
             while (lookingForSpot):
                 steps +=1
-                if dataToAdd < cur.data:  # If new data is less cur's data, go left
+                if key < cur.key:  # updated for key. If new data is less cur's data, go left
                     if (cur.left is None):  # if there is a open spot
                         cur.left = nodeToAdd
                         lookingForSpot = False
@@ -51,18 +54,41 @@ class BST(object):  # A binary search tree of data elements
                         lookingForSpot = False
                     else:
                         cur = cur.right  # equivalent of cur = cur.next in LL. Meaning keeping going
-            print (f"steps for adding {dataToAdd}: {steps}")
+            # print (f"steps for adding {dataToAdd}: {steps}")
 
 
-    # TODO find. Excersize for Weds, try to code. return True if it finds it, false if not
-    def find(self, dataToFind): # takes data, NOT a Node
-        pass
+    # return the Object (data) if found, or None
+    def find(self, keyToFind): # takes key, NOT a Node. Also O(log(N))
+        nodeWeFound = None
 
-    # TODO print with __str__ is "hard coded", needs to be better
-    # TODO can we make it generic, and then, can we use recursion?
-    # TODO think about psuedo code for more generic printing. Doesn't have to be pretty
+        cur = self.__root  # the current Node we are looking at
+
+        steps = 1
+        if cur is not None:
+            # we at least have a root already
+            lookingForSpot = True
+
+            while (lookingForSpot):
+                steps += 1
+                if keyToFind < cur.key:  # updated for key. If new data is less cur's data, go left
+                    if (cur.left is None):  # if there isn't a left, we aren't gonna find it
+                        lookingForSpot = False
+                    else:
+                        cur = cur.left  # equivalent of cur = cur.next in LL. Meaning keeping going
+                elif keyToFind > cur.key:  # Otherwise > look right
+                    if (cur.right is None): # if there isn't a right, we aren't gonna find it
+                        lookingForSpot = False
+                    else:
+                        cur = cur.right
+                else: # we found it!
+                    nodeWeFound = cur
+                    lookingForSpot = False
+        return nodeWeFound
+
+    # working on inOrder to make this better
     def __str__(self):
-        message = f"\t  {self.__root}\n"
+        return self.inOrder()
+        """message = f"\t  {self.__root}\n"
 
         if (self.size>1):
             message += f"\t/\t\\\n"
@@ -74,9 +100,46 @@ class BST(object):  # A binary search tree of data elements
             message += f"\t{self.__root.right.left}\t{self.__root.right.right}"
 
         return message
+        """
 
-    # TODO recursive add
+    # TODO inorder traversal (so that we can print out in order)
+    # instead of a "text based graphics" for printing out a tree, we are better off with
+    # an in-order traversal, printing out each item in order of smallest to largest
+    def inOrder(self):
+        message = ""
 
-    # TODO recursive find
+        cur = self.__root  # the current Node we are looking at
+
+        steps = 1
+        if cur is not None:
+            # we at least have a root already
+
+            lookingForSpot = True
+
+            while (lookingForSpot): # TODO how do we visit each node, and add the str(cur.data) to the message in order?
+                steps += 1
+                # how do we know we've gotten to the smallest item?
+                # you have to get to the point where cur.left is None
+                # you'd add that node's data to this message, then go right(and take care of everything here),
+                # the back up to the parent you came and print that
+                """if keyToFind < cur.key:  # updated for key. If new data is less cur's data, go left
+                    if (cur.left is None):  # if there isn't a left, we aren't gonna find it
+                        lookingForSpot = False
+                    else:
+                        cur = cur.left  # equivalent of cur = cur.next in LL. Meaning keeping going
+                elif keyToFind > cur.key:  # Otherwise > look right
+                    if (cur.right is None):  # if there isn't a right, we aren't gonna find it
+                        lookingForSpot = False
+                    else:
+                        cur = cur.right
+                else:  # we found it!
+                    nodeWeFound = cur
+                    lookingForSpot = False"""
+        return message
+    # TODO try recursive add on your own
+
+    # TODO recursive find on your own
+
+    # TODO recursive inorder
 
     # how would delete work?
