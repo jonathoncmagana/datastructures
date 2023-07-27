@@ -39,21 +39,19 @@ def main():
 
     #print(mywords)
 
-
+"""
     my_BST = BST() # creates an empty BST, size 0, and root points to None
 
-    # TODO: Question - the order I add things in matters to how the tree
-    # TODO gets structured. Why?
-    my_BST.add(4)
-    my_BST.add(6)
-    my_BST.add(2)
-    my_BST.add(1)
-    my_BST.add(3)
-    my_BST.add(5)
-    my_BST.add(7)
+    my_BST.add(4, 4) # for ints, key and data are the same
+    my_BST.add(6, 6)
+    my_BST.add(2, 2)
+    my_BST.add(1, 1)
+    my_BST.add(3, 3)
+    my_BST.add(5, 5)
+    my_BST.add(7, 7)
 
     print(my_BST)
-    
+    """
     start = timer()
     # we are timing the code between start and end
     for i in range(200): # when you double this number, the time more than doubles. why? O(n^2)

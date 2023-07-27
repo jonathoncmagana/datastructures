@@ -35,7 +35,8 @@ class LinkedList(object):  # A linked list of data elements
     # TODO can re-write add, and other functions, so that only data comes in, not a Node
     # We can re-write add so it DOESn't have a loop?
     #      -> add can be improve by maintaining a 'tail' reference that always points to the last node in the list
-    def add(self, other: Node): #add to end
+    def add(self, otherdata): #add to end
+        other = Node(otherdata)
         cur = self.__head
         steps = 1  # we count 1 step for coming in a function at all
         if (self.size ==0): # empty list coming in to add
@@ -63,26 +64,28 @@ class LinkedList(object):  # A linked list of data elements
 
     # TODO need to account for edge cases (addAt first, last?, list is empty, or index is out of bounds)
 
-    def addAt(self, index: int, other:Node):
-
-
-
-        # it is inefficient to call get twice, can we only call it once?
-        nodeiminus1 = self.get(index-1) # big O(n)
-        nodei = nodeiminus1.next # self.get(index) # big O(n)
-        # we can re-write to call get only once, see above
-
-        # big O(2n), but so what, this is just O(n)
-
-        # we identified 2 operations we needed from our picture:
-        nodeiminus1.next = other
-        other.next = nodei
+    def addAt(self, index: int, otherdata):
+        other = Node(otherdata)
 
         # what if we addAt(0)?
         # update the __head!!!!
-        # TODO not tested!
         if (index == 0):
+            other.next = self.__head
             self.__head = other
+            # adding at head
+        else:
+            # it is inefficient to call get twice, can we only call it once?
+            nodeiminus1 = self.get(index-1) # big O(n)
+            nodei = nodeiminus1.next # self.get(index) # big O(n)
+            # we can re-write to call get only once, see above
+
+            # big O(2n), but so what, this is just O(n)
+
+            # we identified 2 operations we needed from our picture:
+            nodeiminus1.next = other
+            other.next = nodei
+
+
         self.size += 1
 
 
@@ -90,15 +93,25 @@ class LinkedList(object):  # A linked list of data elements
 
     # TODO need to account for edge cases (removing first, last, list is empty, or index is out of bounds)
     def remove(self, index:int):
-        # see picture from video
-        # (i-1).next = (i.next)
-        nodeiminus1 = self.get(index - 1)  # big O(n)
-        nodei = nodeiminus1.next #self.get(index)  # big O(n)
 
-        nodeiminus1.next = nodei.next
+
+        # what if we remove(0)?
+        # update the __head!!!!
+        if (index == 0):
+            # remove last node in list?
+            if (self.size == 1):
+                self.__head = None
+            else:
+                self.__head = self.__head.next
+        else:
+            # see picture from video
+            # (i-1).next = (i.next)
+            nodeiminus1 = self.get(index - 1)  # big O(n)
+            nodei = nodeiminus1.next #self.get(index)  # big O(n)
+
+            nodeiminus1.next = nodei.next
         self.size -= 1
 
-        pass
     # print
     # assmume we have a valid list coming in
     # this should be a "read only" function
