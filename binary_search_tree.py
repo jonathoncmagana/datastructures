@@ -88,7 +88,7 @@ class BST(object):  # A binary search tree of data elements
 
     # working on inOrder to make this better
     def __str__(self):
-        return self.inOrderNonRecursive()
+        return self.inorderTraversal()
         """message = f"\t  {self.__root}\n"
 
         if (self.size>1):
@@ -150,5 +150,20 @@ class BST(object):  # A binary search tree of data elements
     # TODO recursive find on your own
 
     # TODO recursive inorder
+    def inorderTraversal(self):
+        message = ""
+        message = self.inorderTraversalHelper(self.__root)
+        return message
+
+
+    def inorderTraversalHelper(self, cur):
+
+        if cur is None:
+            return ""
+
+        message = self.inorderTraversalHelper(cur.left) # this is tricky (being = )
+        message += f"{cur}, "
+        message += self.inorderTraversalHelper(cur.right)
+        return message
 
     # how would delete work?

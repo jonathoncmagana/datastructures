@@ -22,7 +22,7 @@ def main():
     student3 = Student(1235, "Jane", "CS", 3.9)
     mystudents.add(student3.id, student3)
 
-    print(mystudents)
+    print(f"printing student tree: {mystudents}")
 
     print("about to look for 1235")
     print(mystudents.find(1235))
@@ -48,7 +48,7 @@ def main():
     my_BST.add(1, 1)
     my_BST.add(3, 3)
     my_BST.add(5, 5)
-    my_BST.add(7, 7)
+    my_BST.add(6, 6)
 
     print(my_BST)
     """
