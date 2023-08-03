@@ -39,12 +39,15 @@ class MorseTree(object):  # A binary search tree for morse code
         while (len(code)>0): # while we still have some code left to parse
             nextPart = code[0:1:1] # start:stop:step, same as code{:1:] since default start is 0, default step is 1
             code = code[1:] # substring starting at spot 1, so spot 0 is removed
-            if (len(code)==0): # we are at the end of the code
+            # "" is empty string, len("") is 0
+
+            #TODO can this be simplified? Is it better as recursion?
+            if (len(code)==0): # we are at the end of the code, "base case"
                 if (nextPart=="."):# got left
                     if (cur_parent.left is None):
                         cur_parent.left = Node(character)
                     else:
-                        cur_parent.left.character = character
+                        cur_parent.left.character = character # and Empty node is already available where we need it
 
                 elif (nextPart=="-"): # go right
                     if (cur_parent.right is None):
@@ -52,8 +55,9 @@ class MorseTree(object):  # A binary search tree for morse code
                     else:
                         cur_parent.right.character = character
                 else:
+                    print(f"Warning - skipping: ->{nextPart}<-" )
                     return False # we are in trouble
-            else: # we are not at the end of the code
+            else: # we are not at the end of the code, still trying to get to where we are going
                 if (nextPart == "."):  # got left
                     if (cur_parent.left is None):
                         cur_parent.left = Node(None)
@@ -63,6 +67,7 @@ class MorseTree(object):  # A binary search tree for morse code
                         cur_parent.right = Node(None)
                     cur_parent = cur_parent.right
                 else:
+                    print(f"Warning - skipping: ->{nextPart}<-")
                     return False  # we are in trouble
 
         return True # if we get back out here, we were successful
