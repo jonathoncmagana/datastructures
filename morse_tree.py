@@ -75,34 +75,47 @@ class MorseTree(object):  # A binary search tree for morse code
 
 
 
-    def decode(self, keyToFind):
-        pass # need to update for Morse Tree. based on traditional find
-        """ 
-        nodeWeFound = None
+    def decode(self, code):
+        cur_parent = self.__root
 
-        cur = self.__root  # the current Node we are looking at
+        # we must move left or right based on the dots and dashes in the code until we have nothing remaining
 
-        steps = 1
-        if cur is not None:
-            # we at least have a root already
-            lookingForSpot = True
+        # for code, . is left, - is right
+        # the root is never None, since it is initialized in the __init__
+        while (len(code) > 0):  # while we still have some code left to parse
+            nextPart = code[0:1:1]  # start:stop:step, same as code{:1:] since default start is 0, default step is 1
+            code = code[1:]  # substring starting at spot 1, so spot 0 is removed
+            # "" is empty string, len("") is 0
 
-            while (lookingForSpot):
-                steps += 1
-                if keyToFind < cur.key:  # updated for key. If new data is less cur's data, go left
-                    if (cur.left is None):  # if there isn't a left, we aren't gonna find it
-                        lookingForSpot = False
+            if (len(code) == 0):  # we are at the end of the code, "base case" -> should have found it
+                if (nextPart == "."):  # got left
+                    if (cur_parent.left is None):
+                        # not in coded tree
+                        return "[ERROR!!!!!!!]"
                     else:
-                        cur = cur.left  # equivalent of cur = cur.next in LL. Meaning keeping going
-                elif keyToFind > cur.key:  # Otherwise > look right
-                    if (cur.right is None): # if there isn't a right, we aren't gonna find it
-                        lookingForSpot = False
+                        return cur_parent.left.character
+
+                elif (nextPart == "-"):  # go right
+                    if (cur_parent.right is None):
+                        # not in coded tree
+                        return "[ERROR!!!!!!!]"
                     else:
-                        cur = cur.right
-                else: # we found it!
-                    nodeWeFound = cur
-                    lookingForSpot = False
-        return nodeWeFound """
+                        return cur_parent.right.character
+                else:
+                    return "[ERROR!!!!!!!]"  # we are in trouble
+            else:  # we are not at the end of the code, still trying to get to where we are going
+                if (nextPart == "."):  # got left
+                    if (cur_parent.left is None):
+                        return "[ERROR!!!!!!!]"
+                    cur_parent = cur_parent.left
+                elif (nextPart == "-"):  # go right
+                    if (cur_parent.right is None):
+                        return "[ERROR!!!!!!!]"
+                    cur_parent = cur_parent.right
+                else:
+                    return "[ERROR!!!!!!!]"  # we are in trouble
+
+        return "[ERROR!!!!!!!]"  # if we get back out here, we have a problem
 
     # working on inOrder to make this better
     def __str__(self):
